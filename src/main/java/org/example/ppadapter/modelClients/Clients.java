@@ -17,7 +17,6 @@ public class Clients {
     @Column(name = "fullName")
     private String fullName;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "phone")
     private String phone;
     @Column(name = "birthday")

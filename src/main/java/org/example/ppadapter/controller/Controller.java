@@ -17,8 +17,8 @@ public class Controller {
     private final ClientService clientService;
 
     @GetMapping("/api/v1/getClient")
-    public List<Clients> getAllClients(){
-        return clientService.getAll();
+    public void getAllClients(){
+       clientService.getAll();
 
     }
     @GetMapping("/api/v1/getClient/{clientId}")
