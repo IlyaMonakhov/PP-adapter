@@ -1,6 +1,7 @@
 package org.example.ppadapter.service;
 
 
+import lombok.RequiredArgsConstructor;
 import org.example.ppadapter.modelClients.ClientINFO;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -9,14 +10,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service
+@RequiredArgsConstructor
 public class KafkaProducer {
     private ClientINFO clientINFO;
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final KafkaTemplate<Object, Object> kafkaTemplate;
 
 
-    public KafkaProducer(KafkaTemplate<String, String> kafkaTemplate) {
-        this.kafkaTemplate = kafkaTemplate;
-    }
     public void sendDiscountMessage() {
         LocalDateTime currentTime = LocalDateTime.now();
         LocalDate currentDate = currentTime.toLocalDate();

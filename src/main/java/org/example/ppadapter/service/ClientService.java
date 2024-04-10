@@ -25,7 +25,7 @@ public class ClientService {
     private DTOMap dtoMap;
     private Clients clients;
     private ConfigKafka configKafka;
-    private KafkaTemplate<String,Object> kafkaTemplate;
+    private KafkaTemplate<Object, Object> kafkaTemplate;
 
 
 

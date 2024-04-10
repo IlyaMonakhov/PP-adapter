@@ -4,6 +4,7 @@ import org.example.ppadapter.httpClient.ClientsFeignClient;
 import org.example.ppadapter.modelClients.Clients;
 import org.example.ppadapter.service.ClientService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,8 +23,8 @@ public class Controller {
 
     }
     @GetMapping("/api/v1/getClient/{clientId}")
-    public void getClientById(long id){
-        clientService.getClientByID(id);
+    public void getClientById(@PathVariable Long clientId){
+        clientService.getClientByID(clientId);
     }
 
 

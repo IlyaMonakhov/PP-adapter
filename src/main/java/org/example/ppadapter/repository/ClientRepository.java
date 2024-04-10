@@ -1,16 +1,8 @@
 package org.example.ppadapter.repository;
 
-import jakarta.persistence.metamodel.SingularAttribute;
 import org.example.ppadapter.modelClients.Clients;
-import org.springframework.data.jpa.domain.AbstractPersistable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.io.Serializable;
-import java.util.Optional;
-
 @Repository
-public interface ClientRepository extends JpaRepository<Clients, Long> {
-
-    Optional<Object> findById(SingularAttribute<AbstractPersistable, Serializable> id);
-}
+public interface ClientRepository extends JpaRepository<Clients, Long> {}

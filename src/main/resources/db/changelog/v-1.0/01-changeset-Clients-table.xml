@@ -13,7 +13,7 @@
                  relativeToChangelogFile="true"
                  splitStatements="true"
                  stripComments="true"
-                 path="01-create-Clients-table.sql"/>
+                 path="/01-create-Clients-table.sql"/>
 
 
 
