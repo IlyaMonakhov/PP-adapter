@@ -2,7 +2,6 @@ package org.example.ppadapter.service;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import org.example.ppadapter.config.ConfigKafka;
 import org.example.ppadapter.httpClient.ClientsFeignClient;
 import org.example.ppadapter.mapper.DTOMap;
 import org.example.ppadapter.modelClients.ClientINFO;
@@ -24,13 +23,12 @@ public class ClientService {
     private ClientRepository clientRepository;
     private DTOMap dtoMap;
     private Clients clients;
-    private ConfigKafka configKafka;
     private KafkaTemplate<Object, Object> kafkaTemplate;
 
 
 
 
-    public void getAll() {
+    public List<Clients> getAll() {
         List<ClientINFO> allClients = clientsFeignClient.allGetClients();
         LocalDate currentDate = LocalDate.now();
         List<Clients> mappedClients = allClients.stream()
@@ -53,6 +51,7 @@ public class ClientService {
         clientRepository.save(clients);
 
 
+        return mappedClients;
     }
 
     public ClientINFO getClientByID(long id) {
