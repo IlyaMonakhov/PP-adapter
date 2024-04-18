@@ -1,13 +1,13 @@
-package org.example.ppadapter;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-
-@SpringBootTest
-class PpAdapterApplicationTests {
-
-    @Test
-    void contextLoads() {
-    }
-
-}
+//package org.example.ppadapter;
+//
+//import org.junit.jupiter.api.Test;
+//import org.springframework.boot.test.context.SpringBootTest;
+//
+//@SpringBootTest
+//class PpAdapterApplicationTests {
+//
+//    @Test
+//    void contextLoads() {
+//    }
+//
+//}

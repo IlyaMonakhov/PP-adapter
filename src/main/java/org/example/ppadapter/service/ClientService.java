@@ -7,7 +7,9 @@ import org.example.ppadapter.modelClients.ClientINFO;
 import org.example.ppadapter.modelClients.Clients;
 import org.example.ppadapter.modelClients.Message;
 import org.example.ppadapter.repository.ClientRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -16,12 +18,27 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
 public class ClientService {
+
     private final ClientsFeignClient clientsFeignClient;
+    private final DTOMap dtoMapper;
     private final ClientRepository clientRepository;
-    private final DTOMap dtoMap;
     private final KafkaTemplate<String, Message> kafkaTemplate;
+
+    @Autowired
+    public ClientService(ClientsFeignClient clientsFeignClient, DTOMap dtoMapper, ClientRepository clientRepository, KafkaTemplate<String, Message> kafkaTemplate) {
+        this.clientsFeignClient = clientsFeignClient;
+        this.dtoMapper = dtoMapper;
+        this.clientRepository = clientRepository;
+        this.kafkaTemplate = kafkaTemplate;
+    }
+    @Scheduled(fixedRate = 5000)
+    public void all(){
+        clientRepository.saveAll(clientsFeignClient.allGetClients()
+                .stream()
+                .map(dtoMapper::map)
+                .collect(Collectors.toList()));
+    }
 
     public List<Clients> getAll() {
         List<ClientINFO> allClients = clientsFeignClient.allGetClients();
@@ -29,7 +46,7 @@ public class ClientService {
 
         LocalDate currentDate = LocalDate.now(ZoneId.of("Europe/Moscow"));
         List<Clients> mappedClients = allClients.stream()
-                .map(dtoMap::map)
+                .map(dtoMapper::map)
                 .filter(cl -> {
                     boolean passesFilter = cl.getPhone().endsWith("7") && cl.getBirthday().getMonth() == (currentDate.getMonthValue());
                     if (!passesFilter) {
@@ -60,6 +77,7 @@ public class ClientService {
 
         return mappedClients;
     }
+
 
     public ClientINFO getClientByID(long id) {
         return clientsFeignClient.getByIdClient(id);

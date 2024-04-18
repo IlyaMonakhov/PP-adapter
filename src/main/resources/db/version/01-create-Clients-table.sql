@@ -1,7 +1,7 @@
-create table Clients
+create table clients
 (
-    FullName    varchar(255),
+    full_name    varchar(255),
     phone       varchar(255) PRIMARY KEY,
     birthday    DATE,
-    messageSend BOOLEAN
+    message_send BOOLEAN
 );

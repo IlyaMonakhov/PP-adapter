@@ -14,16 +14,16 @@ import java.sql.Date;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "Clients")
+@Table(name = "clients")
 public class Clients {
-    @Column(name = "fullName")
+    @Column(name = "full_name")
     private String fullName;
     @Id
     @Column(name = "phone")
     private String phone;
     @Column(name = "birthday")
     private Date birthday;
-    @Column(name = "messageSend")
+    @Column(name = "message_send")
     private Boolean messageSend;
 }
 
