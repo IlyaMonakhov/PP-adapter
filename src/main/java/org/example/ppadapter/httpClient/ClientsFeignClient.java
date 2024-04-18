@@ -7,13 +7,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
-@FeignClient(value = "UserApi", url = "${clients.url}")
+@FeignClient(name = "Clients", url = "${clients.url}")
 public interface ClientsFeignClient {
 
-    @GetMapping("/api/v1/getClient")
+    @GetMapping
     List<ClientINFO> allGetClients();
 
-    @GetMapping("/api/v1/getClient/{clientId}")
+
+    @GetMapping("/api/v1/getClients/{clientId}")
     ClientINFO getByIdClient(@PathVariable("clientId") Long id);
 
 
