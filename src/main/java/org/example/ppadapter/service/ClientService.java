@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +26,7 @@ public class ClientService {
     private final DTOMap dtoMapper;
     private final ClientRepository clientRepository;
     private final KafkaTemplate<String, Message> kafkaTemplate;
+
 
     @Autowired
     public ClientService(ClientsFeignClient clientsFeignClient, DTOMap dtoMapper, ClientRepository clientRepository, KafkaTemplate<String, Message> kafkaTemplate) {
@@ -49,11 +51,19 @@ public class ClientService {
         LocalDate currentDate = LocalDate.now(ZoneId.of("Europe/Moscow"));
         List<Clients> mappedClients = allClients.stream()
                 .map(dtoMapper::map)
-                .filter(cl -> {
-                    boolean passesFilter = cl.getPhone().endsWith("7") && cl.getBirthday().getMonth() == currentDate.getMonthValue();
-                    return passesFilter;
-                })
+                .filter(ms -> ms.getPhone().endsWith("7"))
+                .filter(ms -> ms.getBirthday().toLocalDate().getMonthValue() == LocalDate.now().getMonthValue())
                 .collect(Collectors.toList());
+//        List<Clients> mappedClients = new ArrayList<>();
+//        for (var s :allClients){
+//            var ms = dtoMapper.map(s);
+//            boolean b = ms.getPhone().endsWith("7");
+//            int month = ms.getBirthday().toLocalDate().getMonthValue();
+//            boolean b1 = month == currentDate.getMonthValue();
+//            if (b && b1){
+//                mappedClients.add(ms);
+//            }
+//        }
         System.out.println("Mapped clients: " + mappedClients.size());
 
         LocalTime currentTime = LocalTime.now(ZoneId.of("Europe/Moscow"));
