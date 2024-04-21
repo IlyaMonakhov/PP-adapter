@@ -4,7 +4,7 @@ spring:
   kafka:
     bootstrap-servers: localhost:9092
     producer:
-#      key-serializer: org.apache.kafka.common.serialization.LongSerializer
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
   liquibase:
     enabled: true
@@ -24,7 +24,7 @@ spring:
       hibernate:
         format_sql: true
 clients:
-  url: http://localhost:8080/api/v1/getClients
+  url: http://localhost:8080
 
 config:
   topic: messageSMS

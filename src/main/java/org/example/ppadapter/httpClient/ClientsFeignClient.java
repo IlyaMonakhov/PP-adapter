@@ -3,6 +3,7 @@ import org.example.ppadapter.modelClients.ClientINFO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 
 import java.util.List;
@@ -10,11 +11,9 @@ import java.util.List;
 @FeignClient(name = "Clients", url = "${clients.url}")
 public interface ClientsFeignClient {
 
-    @GetMapping
+    @GetMapping("/api/v1/getClients")
     List<ClientINFO> allGetClients();
 
-
-    @GetMapping("/api/v1/getClients/{clientId}")
-    ClientINFO getByIdClient(@PathVariable("clientId") String phone);
-
+    @PostMapping("/api/v1/getClients/{clientId}")
+    ClientINFO clientById(@PathVariable Long clientId);
 }
