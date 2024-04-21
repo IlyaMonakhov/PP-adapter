@@ -15,7 +15,6 @@ public interface ClientsFeignClient {
 
 
     @GetMapping("/api/v1/getClients/{clientId}")
-    ClientINFO getByIdClient(@PathVariable("clientId") Long id);
-
+    ClientINFO getByIdClient(@PathVariable("clientId") String phone);
 
 }

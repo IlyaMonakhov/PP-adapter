@@ -20,14 +20,13 @@ public class ClientController {
     }
 
     @GetMapping("/api/v1/getClients")
-    public ResponseEntity<List<Clients>> getAllClients() {
-        List<Clients> clients = clientService.getAll();
-        return ResponseEntity.ok(clients);
+    public List<Clients> getAllClients() {
+        return clientService.getAll();
     }
 
     @GetMapping("/api/v1/getClients/{clientId}")
-    public ResponseEntity<Clients> getClientById(@PathVariable Long clientId) {
-        ClientINFO client = clientService.getClientByID(clientId);
+    public ResponseEntity<Clients> getClientById(@PathVariable String phone) {
+        ClientINFO client = clientService.getClientByID(phone);
         if (client != null) {
         } else {
             return ResponseEntity.notFound().build();

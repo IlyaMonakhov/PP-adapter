@@ -1,10 +1,7 @@
 package org.example.ppadapter.config;
 import com.fasterxml.jackson.databind.JsonSerializer;
-import lombok.Value;
-import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.example.ppadapter.modelClients.Message;
-import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.kafka.core.ProducerFactory;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;

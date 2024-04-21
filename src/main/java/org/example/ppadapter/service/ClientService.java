@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -32,8 +33,9 @@ public class ClientService {
         this.clientRepository = clientRepository;
         this.kafkaTemplate = kafkaTemplate;
     }
-    @Scheduled(fixedRate = 5000)
-    public void all(){
+
+    @Scheduled(fixedRate = 10000)
+    public void all() {
         clientRepository.saveAll(clientsFeignClient.allGetClients()
                 .stream()
                 .map(dtoMapper::map)
@@ -48,10 +50,7 @@ public class ClientService {
         List<Clients> mappedClients = allClients.stream()
                 .map(dtoMapper::map)
                 .filter(cl -> {
-                    boolean passesFilter = cl.getPhone().endsWith("7") && cl.getBirthday().getMonth() == (currentDate.getMonthValue());
-                    if (!passesFilter) {
-                        System.out.println("Client does not pass filter: " + cl);
-                    }
+                    boolean passesFilter = cl.getPhone().endsWith("7") && cl.getBirthday().getMonth() == currentDate.getMonthValue();
                     return passesFilter;
                 })
                 .collect(Collectors.toList());
@@ -60,27 +59,26 @@ public class ClientService {
         LocalTime currentTime = LocalTime.now(ZoneId.of("Europe/Moscow"));
 
         for (Clients cl : mappedClients) {
-            int discount;
-            if (currentDate.getMonthValue() == cl.getBirthday().getMonth()) discount = 10;
-            else discount = 5;
+            int discount = currentDate.getMonthValue() == cl.getBirthday().getMonth() ? 10 : 5;
 
             if (currentTime.isBefore(LocalTime.of(19, 0))) {
                 String messageText = cl.getFullName() + ", в этом месяце для вас действует скидка " + discount + "%";
                 Message message = new Message(cl.getPhone(), messageText);
                 kafkaTemplate.send("SMSMassage", message);
+                cl.setMessageSend(true);
             }
-
-            cl.setMessageSend(true);
         }
 
+        // Сохраняем изменения в базе данных
         clientRepository.saveAll(mappedClients);
+        clientRepository.flush();
 
         return mappedClients;
     }
 
 
-    public ClientINFO getClientByID(long id) {
-        return clientsFeignClient.getByIdClient(id);
+    public ClientINFO getClientByID(String phone) {
+        return clientsFeignClient.getByIdClient(phone);
     }
 }
 
