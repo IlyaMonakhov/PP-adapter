@@ -20,6 +20,4 @@ public class ClientINFO {
     private String phone;
 
 
-    public ClientINFO(long clientId, String name, String middleName, String surname, int age, Date birthday, String phone) {
-    }
 }

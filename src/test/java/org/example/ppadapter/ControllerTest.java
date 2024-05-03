@@ -2,9 +2,7 @@ package org.example.ppadapter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
-
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import org.example.ppadapter.controller.ClientController;

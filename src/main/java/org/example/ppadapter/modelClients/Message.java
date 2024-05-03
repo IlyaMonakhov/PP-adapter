@@ -13,5 +13,9 @@ public class Message {
         this.phone = phone;
         this.messageText = messageText;
     }
+
+    public Message() {
+
+    }
 }
 

@@ -24,8 +24,6 @@ public class Clients {
     @Column(name = "message_send")
     private Boolean messageSend;
 
-    protected Clients() {
-    }
 
     public Clients(Long clientId, String fullName, String phone, Date birthday, Boolean messageSend) {
         this.clientId = clientId;
@@ -33,6 +31,10 @@ public class Clients {
         this.phone = phone;
         this.birthday = birthday;
         this.messageSend = messageSend;
+    }
+
+    public Clients() {
+
     }
 }
 
