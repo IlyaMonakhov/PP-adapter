@@ -49,8 +49,9 @@ public class ClientService {
         LocalDate currentDate = LocalDate.now(ZoneId.of("Europe/Moscow"));
         List<Clients> mappedClients = allClients.stream()
                 .map(dtoMapper::map)
-                .filter(ms -> ms.getPhone().endsWith("7"))
-                .filter(ms -> ms.getBirthday().toLocalDate().getMonthValue() == LocalDate.now().getMonthValue())
+                .filter(mappedClient -> mappedClient.getPhone().endsWith("7"))
+                .filter(mappedClient -> mappedClient.getBirthday() != null &&
+                        mappedClient.getBirthday().toLocalDate().getMonthValue() == LocalDate.now().getMonthValue())
                 .collect(Collectors.toList());
 
         System.out.println("Mapped clients: " + mappedClients.size());
