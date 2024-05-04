@@ -1,11 +1,17 @@
 server:
   port: 8081
 spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
   liquibase:
     enabled: true
-    change-log: classpath:db.changelog/db.changelog-master.xml
+    change-log: classpath:db/db.changelog-master.xml
+    drop-first: false
   datasource:
-    url: jdbc:postgresql://localhost:5432/Clients
+    url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
     password: ilya58
   jpa:
@@ -18,7 +24,8 @@ spring:
       hibernate:
         format_sql: true
 clients:
-  url: localhost:8080
+  url: http://localhost:8080
 
 config:
   topic: messageSMS
+

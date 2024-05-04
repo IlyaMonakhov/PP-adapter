@@ -1,27 +1,40 @@
 package org.example.ppadapter.modelClients;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import javax.persistence.*;
 import java.sql.Date;
+import java.time.LocalDate;
+
 
 @Data
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
-@Table(name = "Clients")
-
+@Table(name = "clients")
 public class Clients {
-    @Column(name = "fullName")
-    private String fullName;
+
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long clientId;
+    @Column(name = "full_name")
+    private String fullName;
     @Column(name = "phone")
     private String phone;
     @Column(name = "birthday")
     private Date birthday;
-    @Column(name = "messageSend")
+    @Column(name = "message_send")
     private Boolean messageSend;
+
+
+    public Clients(Long clientId, String fullName, String phone, Date birthday, Boolean messageSend) {
+        this.clientId = clientId;
+        this.fullName = fullName;
+        this.phone = phone;
+        this.birthday = birthday;
+        this.messageSend = messageSend;
+    }
+
+    public Clients() {
+
+    }
 }
 
