@@ -48,7 +48,7 @@ public class ClientServiceTest {
         clients.setClientId(1L);
         clients.setMessageSend(true);
         clients.setPhone("79996155507");
-        clients.setFullName("wdaw");
+        clients.setFullName("Петр Петрович Петров");
         clients.setBirthday(Date.valueOf(LocalDate.now()));
         List<ClientINFO> allClients = Arrays.asList(client1, client2);
 
