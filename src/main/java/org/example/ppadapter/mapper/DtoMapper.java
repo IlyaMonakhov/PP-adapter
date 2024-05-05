@@ -1,6 +1,6 @@
 package org.example.ppadapter.mapper;
 import org.example.ppadapter.modelClients.Client;
-import org.example.ppadapter.modelClients.ClientINFO;
+import org.example.ppadapter.modelClients.ClientInfo;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -15,5 +15,5 @@ public interface DtoMapper {
     @Mapping(source = "phone", target = "phone")
     @Mapping(source = "birthday", target = "birthday", dateFormat = "yyyy-MM-dd")
     @Mapping(target = "messageSend", constant = "false")
-    Client map(ClientINFO clientINFO);
+    Client map(ClientInfo clientINFO);
 }

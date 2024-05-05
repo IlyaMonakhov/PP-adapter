@@ -3,7 +3,7 @@ package org.example.ppadapter;
 import org.example.ppadapter.httpClient.ClientsFeignClient;
 import org.example.ppadapter.mapper.DtoMapper;
 import org.example.ppadapter.modelClients.Client;
-import org.example.ppadapter.modelClients.ClientINFO;
+import org.example.ppadapter.modelClients.ClientInfo;
 import org.example.ppadapter.modelClients.Message;
 import org.example.ppadapter.repository.ClientRepository;
 import org.example.ppadapter.service.ClientService;
@@ -42,15 +42,15 @@ public class ClientServiceTest {
     @Test
     void testGetAll() {
         // Given
-        ClientINFO client1 = new ClientINFO(2L, "Петр", "Петрович", "Петров", 35, new Date(1989, 5, 10), "+79996155507");
-        ClientINFO client2 = new ClientINFO(2L, "Иван", "Иванович", "Иванов", 40, new Date(1990, 7, 20), "+79996155555");
-        Client client = new Client();
-        client.setClientId(1L);
-        client.setMessageSend(true);
-        client.setPhone("79996155507");
-        client.setFullName("Петр Петрович Петров");
-        client.setBirthday(Date.valueOf(LocalDate.now()));
-        List<ClientINFO> allClients = Arrays.asList(client1, client2);
+        ClientInfo client1 = new ClientInfo(2L, "Петр", "Петрович", "Петров", 35, new Date(1989, 5, 10), "+79996155507");
+        ClientInfo client2 = new ClientInfo(2L, "Иван", "Иванович", "Иванов", 40, new Date(1990, 7, 20), "+79996155555");
+        Client client = new Client()
+                .setClientId(1L)
+                .setMessageSend(true)
+                .setPhone("79996155507")
+                .setFullName("Петр Петрович Петров")
+                .setBirthday(Date.valueOf(LocalDate.now()));
+        List<ClientInfo> allClients = Arrays.asList(client1, client2);
 
         when(clientsFeignClient.allGetClients()).thenReturn(allClients);
         when(dtoMapper.map(any())).thenReturn(client);
@@ -67,13 +67,13 @@ public class ClientServiceTest {
     @Test
     void testClientById() {
         // Given
-        ClientINFO client2 = new ClientINFO(2L, "Петр", "Петрович", "Петров", 35, new Date(1989, 5, 10), "+79996155507");
-        Client client = new Client();
-        client.setClientId(1L);
-        client.setMessageSend(true);
-        client.setPhone("79996155507");
-        client.setFullName("Петр Петрович Петров");
-        client.setBirthday(Date.valueOf(LocalDate.now()));
+        ClientInfo client2 = new ClientInfo(2L, "Петр", "Петрович", "Петров", 35, new Date(1989, 5, 10), "+79996155507");
+        Client client = new Client()
+                .setClientId(1L)
+                .setMessageSend(true)
+                .setPhone("79996155507")
+                .setFullName("Петр Петрович Петров")
+                .setBirthday(Date.valueOf(LocalDate.now()));
         when(clientsFeignClient.clientById(2L)).thenReturn(client2);
         when(dtoMapper.map(any())).thenReturn(client);
 

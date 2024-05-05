@@ -1,5 +1,5 @@
 package org.example.ppadapter.httpClient;
-import org.example.ppadapter.modelClients.ClientINFO;
+import org.example.ppadapter.modelClients.ClientInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,8 +12,8 @@ import java.util.List;
 public interface ClientsFeignClient {
 
     @GetMapping("/api/v1/getClients")
-    List<ClientINFO> allGetClients();
+    List<ClientInfo> allGetClients();
 
     @PostMapping("/api/v1/getClients/{clientId}")
-    ClientINFO clientById(@PathVariable Long clientId);
+    ClientInfo clientById(@PathVariable Long clientId);
 }

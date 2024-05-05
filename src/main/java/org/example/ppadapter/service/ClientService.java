@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.ppadapter.httpClient.ClientsFeignClient;
 import org.example.ppadapter.mapper.DtoMapper;
 import org.example.ppadapter.modelClients.Client;
-import org.example.ppadapter.modelClients.ClientINFO;
+import org.example.ppadapter.modelClients.ClientInfo;
 import org.example.ppadapter.modelClients.Message;
 import org.example.ppadapter.repository.ClientRepository;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -30,7 +30,7 @@ public class ClientService {
 
 
     public List<Client> getAll() {
-        List<ClientINFO> allClients = clientsFeignClient.allGetClients();
+        List<ClientInfo> allClients = clientsFeignClient.allGetClients();
         log.info("Received clients: {}", allClients.size());
 
         LocalDate currentDate = LocalDate.now(ZoneId.of("Europe/Moscow"));
@@ -67,7 +67,7 @@ public class ClientService {
 
 
     public Client clientById(Long clientId) {
-        ClientINFO clientInfo = clientsFeignClient.clientById(clientId);
+        ClientInfo clientInfo = clientsFeignClient.clientById(clientId);
         Client client = dtoMapper.map(clientInfo);
 
         LocalDate currentDate = LocalDate.now(ZoneId.of("Europe/Moscow"));

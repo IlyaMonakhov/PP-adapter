@@ -3,6 +3,8 @@ package org.example.ppadapter.modelClients;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
+
 import javax.persistence.*;
 import java.sql.Date;
 
@@ -10,6 +12,7 @@ import java.sql.Date;
 @Data
 @Entity
 @AllArgsConstructor
+@Accessors(chain = true)
 @NoArgsConstructor
 @Table(name = "clients")
 public class Client {

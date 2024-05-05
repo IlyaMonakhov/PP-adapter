@@ -6,14 +6,13 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.sql.Date;
-import java.time.LocalDate;
 
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-public class ClientINFO {
+public class ClientInfo {
     private Long clientId;
     private String name;
     private String middleName;
