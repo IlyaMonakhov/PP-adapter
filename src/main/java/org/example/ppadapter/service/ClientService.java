@@ -3,9 +3,9 @@ package org.example.ppadapter.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.ppadapter.httpClient.ClientsFeignClient;
-import org.example.ppadapter.mapper.DTOMap;
+import org.example.ppadapter.mapper.DtoMapper;
+import org.example.ppadapter.modelClients.Client;
 import org.example.ppadapter.modelClients.ClientINFO;
-import org.example.ppadapter.modelClients.Clients;
 import org.example.ppadapter.modelClients.Message;
 import org.example.ppadapter.repository.ClientRepository;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -24,17 +24,17 @@ import java.util.stream.Collectors;
 public class ClientService {
 
     private final ClientsFeignClient clientsFeignClient;
-    private final DTOMap dtoMapper;
+    private final DtoMapper dtoMapper;
     private final ClientRepository clientRepository;
     private final KafkaTemplate<String, Message> kafkaTemplate;
 
 
-    public List<Clients> getAll() {
+    public List<Client> getAll() {
         List<ClientINFO> allClients = clientsFeignClient.allGetClients();
         log.info("Received clients: {}", allClients.size());
 
         LocalDate currentDate = LocalDate.now(ZoneId.of("Europe/Moscow"));
-        List<Clients> mappedClients = allClients.stream()
+        List<Client> mappedClients = allClients.stream()
                 .map(dtoMapper::map)
                 .filter(mappedClient -> mappedClient.getPhone().endsWith("7"))
                 .filter(mappedClient -> mappedClient.getBirthday() != null &&
@@ -45,7 +45,7 @@ public class ClientService {
 
         LocalTime currentTime = LocalTime.now(ZoneId.of("Europe/Moscow"));
 
-        for (Clients cl : mappedClients) {
+        for (Client cl : mappedClients) {
             int discount = currentDate.getMonthValue() == cl.getBirthday().toLocalDate().getMonthValue() ? 10 : 5;
 
             if (currentTime.isBefore(LocalTime.of(19, 0))) {
@@ -66,9 +66,9 @@ public class ClientService {
 
 
 
-    public Clients clientById(Long clientId) {
+    public Client clientById(Long clientId) {
         ClientINFO clientInfo = clientsFeignClient.clientById(clientId);
-        Clients client = dtoMapper.map(clientInfo);
+        Client client = dtoMapper.map(clientInfo);
 
         LocalDate currentDate = LocalDate.now(ZoneId.of("Europe/Moscow"));
         LocalTime currentTime = LocalTime.now(ZoneId.of("Europe/Moscow"));

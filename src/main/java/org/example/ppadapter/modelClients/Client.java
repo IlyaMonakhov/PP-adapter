@@ -1,15 +1,18 @@
 package org.example.ppadapter.modelClients;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.sql.Date;
-import java.time.LocalDate;
 
 
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "clients")
-public class Clients {
+public class Client {
 
 
     @Id
@@ -25,16 +28,5 @@ public class Clients {
     private Boolean messageSend;
 
 
-    public Clients(Long clientId, String fullName, String phone, Date birthday, Boolean messageSend) {
-        this.clientId = clientId;
-        this.fullName = fullName;
-        this.phone = phone;
-        this.birthday = birthday;
-        this.messageSend = messageSend;
-    }
-
-    public Clients() {
-
-    }
 }
 

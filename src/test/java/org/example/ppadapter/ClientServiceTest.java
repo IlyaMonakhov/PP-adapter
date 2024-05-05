@@ -1,9 +1,9 @@
 package org.example.ppadapter;
 
 import org.example.ppadapter.httpClient.ClientsFeignClient;
-import org.example.ppadapter.mapper.DTOMap;
+import org.example.ppadapter.mapper.DtoMapper;
+import org.example.ppadapter.modelClients.Client;
 import org.example.ppadapter.modelClients.ClientINFO;
-import org.example.ppadapter.modelClients.Clients;
 import org.example.ppadapter.modelClients.Message;
 import org.example.ppadapter.repository.ClientRepository;
 import org.example.ppadapter.service.ClientService;
@@ -31,7 +31,7 @@ public class ClientServiceTest {
     private ClientRepository clientRepository;
 
     @Mock
-    private DTOMap dtoMapper;
+    private DtoMapper dtoMapper;
 
     @Mock
     private KafkaTemplate<String, Message> kafkaTemplate;
@@ -44,19 +44,19 @@ public class ClientServiceTest {
         // Given
         ClientINFO client1 = new ClientINFO(2L, "Петр", "Петрович", "Петров", 35, new Date(1989, 5, 10), "+79996155507");
         ClientINFO client2 = new ClientINFO(2L, "Иван", "Иванович", "Иванов", 40, new Date(1990, 7, 20), "+79996155555");
-        Clients clients = new Clients();
-        clients.setClientId(1L);
-        clients.setMessageSend(true);
-        clients.setPhone("79996155507");
-        clients.setFullName("Петр Петрович Петров");
-        clients.setBirthday(Date.valueOf(LocalDate.now()));
+        Client client = new Client();
+        client.setClientId(1L);
+        client.setMessageSend(true);
+        client.setPhone("79996155507");
+        client.setFullName("Петр Петрович Петров");
+        client.setBirthday(Date.valueOf(LocalDate.now()));
         List<ClientINFO> allClients = Arrays.asList(client1, client2);
 
         when(clientsFeignClient.allGetClients()).thenReturn(allClients);
-        when(dtoMapper.map(any())).thenReturn(clients);
+        when(dtoMapper.map(any())).thenReturn(client);
 
         // When
-        List<Clients> result = clientService.getAll();
+        List<Client> result = clientService.getAll();
 
         // Then
         assertEquals(2, result.size()); // Ожидаем, что будет возвращен только один клиент с номером телефона, оканчивающимся на "7" и день рождения в этом месяце
@@ -68,21 +68,21 @@ public class ClientServiceTest {
     void testClientById() {
         // Given
         ClientINFO client2 = new ClientINFO(2L, "Петр", "Петрович", "Петров", 35, new Date(1989, 5, 10), "+79996155507");
-        Clients clients = new Clients();
-        clients.setClientId(1L);
-        clients.setMessageSend(true);
-        clients.setPhone("79996155507");
-        clients.setFullName("Петр Петрович Петров");
-        clients.setBirthday(Date.valueOf(LocalDate.now()));
+        Client client = new Client();
+        client.setClientId(1L);
+        client.setMessageSend(true);
+        client.setPhone("79996155507");
+        client.setFullName("Петр Петрович Петров");
+        client.setBirthday(Date.valueOf(LocalDate.now()));
         when(clientsFeignClient.clientById(2L)).thenReturn(client2);
-        when(dtoMapper.map(any())).thenReturn(clients);
+        when(dtoMapper.map(any())).thenReturn(client);
 
         // When
-        Clients result = clientService.clientById(2L);
+        Client result = clientService.clientById(2L);
 
         // Then
         assertEquals("Петр Петрович Петров", result.getFullName()); // Проверяем, что имя клиента верно
         verify(kafkaTemplate, times(1)).send(any(), any()); // Проверяем, что сообщение было отправлено в Kafka
-        verify(clientRepository, times(1)).save(any(Clients.class)); // Проверяем, что данные были сохранены в базе данных
+        verify(clientRepository, times(1)).save(any(Client.class)); // Проверяем, что данные были сохранены в базе данных
     }
 }

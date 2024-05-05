@@ -1,11 +1,11 @@
 package org.example.ppadapter.mapper;
+import org.example.ppadapter.modelClients.Client;
 import org.example.ppadapter.modelClients.ClientINFO;
-import org.example.ppadapter.modelClients.Clients;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
-public interface DTOMap {
+public interface DtoMapper {
 
     default String createFullName(String name, String middleName, String surname) {
         return name + " " + middleName + " " + surname;
@@ -15,5 +15,5 @@ public interface DTOMap {
     @Mapping(source = "phone", target = "phone")
     @Mapping(source = "birthday", target = "birthday", dateFormat = "yyyy-MM-dd")
     @Mapping(target = "messageSend", constant = "false")
-    Clients map(ClientINFO clientINFO);
+    Client map(ClientINFO clientINFO);
 }
