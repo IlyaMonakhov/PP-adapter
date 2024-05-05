@@ -1,21 +1,16 @@
 package org.example.ppadapter.modelClients;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Data
+@RequiredArgsConstructor
+
 public class Message {
 
-    private String phone;
-    private String messageText;
+    private final String phone;
+    private final String messageText;
 
 
-    public Message(String phone, String messageText) {
-        this.phone = phone;
-        this.messageText = messageText;
-    }
-
-    public Message() {
-
-    }
 }
 

@@ -52,7 +52,7 @@ public class ControllerTest {
         when(clientService.clientById(2L)).thenReturn(client1);
 
 
-        Clients result = clientController.fetchClientById(2L);
+        Clients result = clientController.getClientById(2L);
 
 
         assertThat(result).isEqualTo(client1);

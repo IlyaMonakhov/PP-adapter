@@ -1,12 +1,13 @@
 package org.example.ppadapter.service;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.ppadapter.httpClient.ClientsFeignClient;
 import org.example.ppadapter.mapper.DTOMap;
 import org.example.ppadapter.modelClients.ClientINFO;
 import org.example.ppadapter.modelClients.Clients;
 import org.example.ppadapter.modelClients.Message;
 import org.example.ppadapter.repository.ClientRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,8 @@ import java.util.stream.Collectors;
 
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class ClientService {
 
     private final ClientsFeignClient clientsFeignClient;
@@ -26,17 +29,9 @@ public class ClientService {
     private final KafkaTemplate<String, Message> kafkaTemplate;
 
 
-    @Autowired
-    public ClientService(ClientsFeignClient clientsFeignClient, DTOMap dtoMapper, ClientRepository clientRepository, KafkaTemplate<String, Message> kafkaTemplate) {
-        this.clientsFeignClient = clientsFeignClient;
-        this.dtoMapper = dtoMapper;
-        this.clientRepository = clientRepository;
-        this.kafkaTemplate = kafkaTemplate;
-    }
-
     public List<Clients> getAll() {
         List<ClientINFO> allClients = clientsFeignClient.allGetClients();
-        System.out.println("Received clients: " + allClients.size());
+        log.info("Received clients: {}", allClients.size());
 
         LocalDate currentDate = LocalDate.now(ZoneId.of("Europe/Moscow"));
         List<Clients> mappedClients = allClients.stream()
@@ -46,14 +41,14 @@ public class ClientService {
                         mappedClient.getBirthday().toLocalDate().getMonthValue() == LocalDate.now().getMonthValue())
                 .collect(Collectors.toList());
 
-        System.out.println("Mapped clients: " + mappedClients.size());
+        log.info("Mapped clients: {}", mappedClients.size());
 
         LocalTime currentTime = LocalTime.now(ZoneId.of("Europe/Moscow"));
 
         for (Clients cl : mappedClients) {
             int discount = currentDate.getMonthValue() == cl.getBirthday().toLocalDate().getMonthValue() ? 10 : 5;
 
-            if (currentTime.isBefore(LocalTime.of(23, 0))) {
+            if (currentTime.isBefore(LocalTime.of(19, 0))) {
                 String messageText = cl.getFullName() + ", в этом месяце для вас действует скидка " + discount + "%";
                 Message message = new Message(cl.getPhone(), messageText);
                 kafkaTemplate.send("SMSMassage", message);
@@ -81,7 +76,7 @@ public class ClientService {
         if (client.getPhone().endsWith("7") && client.getBirthday().toLocalDate().getMonthValue() == currentDate.getMonthValue()) {
             int discount = currentDate.getMonthValue() == client.getBirthday().toLocalDate().getMonthValue() ? 10 : 5;
 
-            if (currentTime.isBefore(LocalTime.of(23, 0))) {
+            if (currentTime.isBefore(LocalTime.of(19, 0))) {
                 String messageText = client.getFullName() + ", в этом месяце для вас действует скидка " + discount + "%";
                 Message message = new Message(client.getPhone(), messageText);
                 kafkaTemplate.send("SMSMassage", message);

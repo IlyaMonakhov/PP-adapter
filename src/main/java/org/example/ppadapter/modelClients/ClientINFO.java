@@ -3,6 +3,8 @@ package org.example.ppadapter.modelClients;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
+
 import java.sql.Date;
 import java.time.LocalDate;
 
@@ -10,6 +12,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Accessors(chain = true)
 public class ClientINFO {
     private Long clientId;
     private String name;

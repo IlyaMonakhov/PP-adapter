@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.RequiredArgsConstructor;
 import org.example.ppadapter.modelClients.Clients;
 import org.example.ppadapter.service.ClientService;
 import org.springframework.web.bind.annotation.*;
@@ -12,13 +13,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/")
 public class ClientController {
     private final ClientService clientService;
-
-    public ClientController(ClientService clientService) {
-        this.clientService = clientService;
-    }
 
     @Operation(summary = "Get all clients")
     @ApiResponses(value = {
@@ -40,7 +38,7 @@ public class ClientController {
                     content = @Content)
     })
     @PostMapping("getClients/{clientId}")
-    public Clients fetchClientById(@Parameter(description = "ID of the client to be fetched") @PathVariable Long clientId) {
+    public Clients getClientById(@Parameter(description = "ID of the client to be fetched") @PathVariable Long clientId) {
         return clientService.clientById(clientId);
     }
 }
